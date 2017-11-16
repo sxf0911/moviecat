@@ -11,7 +11,7 @@
 		}])
 
 	module.controller('InTheatersController', ['$scope',function($scope) {
-		
+		$scope.title = '正在热映';
 	}]);
 
 })(angular)
