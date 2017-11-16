@@ -10,7 +10,7 @@
 	  });
 	}]);
 
-	module.controller('ComingSoon', [function() {
-
+	module.controller('ComingSoon', ['$scope',function($scope) {
+		$scope.title = '即将热映';
 	}]);
 })(angular)
