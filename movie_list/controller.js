@@ -2,20 +2,20 @@
 	'use strict';
 
 	//正在热映模块
-	var module = angular.module('moviecat.in_theaters', ['ngRoute','moviecat.services.http'])
+	var module = angular.module('moviecat.movie_list', ['ngRoute','moviecat.services.http'])
 		//配置模块的路由
 		.config(['$routeProvider', function($routeProvider) {
-			$routeProvider.when('/in_theaters/:page', {
-				templateUrl: 'in_theaters/view.html',
-				controller: 'InTheatersController'
+			$routeProvider.when('/:categroy/:page', {
+				templateUrl: 'movie_list/view.html',
+				controller: 'MovieListController'
 			});
 		}]);
 
-	module.controller('InTheatersController', ['$scope','$route','$routeParams','HttpService',function($scope,$route,$routeParams,HttpService) {
-		var count = 10;
+	module.controller('MovieListController', ['$scope','$route','$routeParams','HttpService','AppConfig',function($scope,$route,$routeParams,HttpService,AppConfig) {
+		var count = AppConfig.pageSize;
 		var page = parseInt($routeParams.page);
 		var start = (page-1)*count;
-		$scope.title = '';
+		$scope.title = 'loading...';
         $scope.loading = true;
 		$scope.subjects = [];
         $scope.message = '';
@@ -23,8 +23,8 @@
 		$scope.totalPages = 0;
 		$scope.currentPage = page;
         HttpService.jsonp(
-        	'http://api.douban.com/v2/movie/in_theaters',
-			{start:start,count:count},
+            AppConfig.listApiAddress+$routeParams.categroy,
+			{start:start,count:count,q:$routeParams.q},
 			function (res) {
         	$scope.title = res.title;
             $scope.subjects = res.subjects;
